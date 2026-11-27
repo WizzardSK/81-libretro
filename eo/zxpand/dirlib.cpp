@@ -5,6 +5,7 @@
 #include <dirent.h>
 #include <stdlib.h>
 #include <string>
+#include <strings.h>
 
 extern std::string eo_zxpand_base;
 
@@ -152,6 +153,44 @@ char* zxp_fullpath( char* out, const char* in, size_t len )
   {
     result += parts[ k ];
     if ( k < n - 1 ) result += '/';
+  }
+
+  /* the ZX81 asks in capitals and Windows doesn't mind; elsewhere each
+     part is matched against the folder's entries without regard to case */
+  {
+    std::string fixed = prefix + ( absolute ? "/" : "" );
+
+    for ( int k = 0; k < n; k++ )
+    {
+      std::string part = parts[ k ];
+      struct stat st;
+
+      if ( stat( ( fixed + part ).c_str(), &st ) != 0 )
+      {
+        DIR* d = opendir( fixed.empty() ? "." : fixed.c_str() );
+
+        if ( d )
+        {
+          struct dirent* e;
+
+          while ( ( e = readdir( d ) ) != NULL )
+          {
+            if ( !strcasecmp( e->d_name, part.c_str() ) )
+            {
+              part = e->d_name;
+              break;
+            }
+          }
+
+          closedir( d );
+        }
+      }
+
+      fixed += part;
+      if ( k < n - 1 ) fixed += '/';
+    }
+
+    result = fixed;
   }
 
   if ( result.size() + 1 > len )
