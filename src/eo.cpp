@@ -3,7 +3,6 @@
 #include <string.h>
 #include <stdint.h>
 #include <stdlib.h>
-#include <stdio.h>
 
 #include "zx81config.h"
 #include "zx81.h"
@@ -148,17 +147,6 @@ void eo_settv( CONFIG* cfg )
 void eo_tick( void )
 {
   static int j, borrow;
-
-  /* TEMP debug: EO_DUMP=<frame> writes memory and I to /tmp/eo_dump.bin */
-  {
-    static int frame = 0;
-    const char* d = getenv( "EO_DUMP" );
-    if ( d && ++frame == atoi( d ) )
-    {
-      FILE* f = fopen( "/tmp/eo_dump.bin", "wb" );
-      if ( f ) { fwrite( memory, 1, 65536, f ); fputc( z80.i, f ); fclose( f ); }
-    }
-  }
 
   sound_frame();
 
