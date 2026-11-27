@@ -55,13 +55,6 @@ static int internal_init( CONFIG* cfg )
   zx81.RAM816k    = cfg->LowRAMContents == LOWRAM_8KRAM || cfg->HiRes == HIRESG007;
   zx81.chrgen     = cfg->LowRAMContents == LOWRAM_DK ? CHRGENDK : cfg->ChrGen;
 
-  /* RAM at 8K-16K is where a CHR$128 board keeps its characters; EightyOne
-     1.41 reads 128 of them from there only with the CHR$128 generator,
-     which older versions didn't ask for (Panic HR) */
-  if ( cfg->LowRAMContents == LOWRAM_8KRAM && zx81.chrgen == CHRGENSINCLAIR )
-  {
-    zx81.chrgen = CHRGENCHR128;
-  }
   zx81.extfont    = zx81.chrgen == CHRGENLAMBDA;
   zx81.maxireg    = ( zx81.chrgen == CHRGENDK || zx81.chrgen == CHRGENCHR128 ) ? 0x3f : 0x1f;
   zx81.truehires  = cfg->HiRes;
