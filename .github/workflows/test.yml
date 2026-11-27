@@ -1,0 +1,15 @@
+name: test build
+on: [push, workflow_dispatch]
+jobs:
+  build:
+    strategy:
+      matrix:
+        os: [ubuntu-22.04, ubuntu-22.04-arm]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - run: make -f Makefile.libretro -j4
+      - uses: actions/upload-artifact@v4
+        with:
+          name: 81_libretro-${{ matrix.os }}
+          path: 81_libretro.so
