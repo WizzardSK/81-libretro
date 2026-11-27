@@ -10,7 +10,6 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - run: |
-          set -o pipefail
           make -f Makefile.libretro -k -j4 2>&1 | tee build.log || true
           grep -E "error|undefined reference" build.log | sort -u | head -400 || true
           test -f 81_libretro.so
@@ -18,3 +17,23 @@ jobs:
         with:
           name: 81_libretro-${{ matrix.os }}
           path: 81_libretro.so
+  windows:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+      - run: |
+          sudo apt-get update -qq && sudo apt-get install -y -qq g++-mingw-w64-x86-64 >/dev/null
+          make -f Makefile.libretro platform=mingw_x86_64 CC=x86_64-w64-mingw32-gcc CXX=x86_64-w64-mingw32-g++ -k -j4 2>&1 | tee build.log || true
+          grep -E "error|undefined reference" build.log | sort -u | head -200 || true
+          ls *.dll
+      - uses: actions/upload-artifact@v4
+        with:
+          name: 81_libretro-windows
+          path: "*.dll"
+  android:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+      - run: |
+          cd build/jni && $ANDROID_NDK_LATEST_HOME/ndk-build -j4 APP_ABI=arm64-v8a 2>&1 | tail -40
+          ls ../libs/arm64-v8a
