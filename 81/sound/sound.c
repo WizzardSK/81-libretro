@@ -68,7 +68,7 @@ int temp1,temp2,temp3;
 #endif
 
 extern int frametstates;
-int SelectAYReg;
+extern int SelectAYReg;
 
 /* configuration */
 int sound_enabled=1;

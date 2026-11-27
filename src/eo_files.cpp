@@ -65,24 +65,7 @@ int font_load( const char* filename, char* dest, int length )
   return 0;
 }
 
-extern "C" int CRC32Block( BYTE* block, int len )
-{
-  /* Utils.cpp of EightyOne: CRC-32, low 16 bits kept (the CRCZX80... values) */
-  uint32_t crc = 0xffffffff;
-  int j;
-
-  while ( len-- > 0 )
-  {
-    crc ^= *block++;
-
-    for ( j = 0; j < 8; j++ )
-    {
-      crc = ( crc >> 1 ) ^ ( ( crc & 1 ) ? 0xedb88320 : 0 );
-    }
-  }
-
-  return (int)( crc & 0xffff );
-}
+/* CRC32Block: Utils.cpp */
 
 AnsiString getMachineRoot( AnsiString fullRomName )
 {
