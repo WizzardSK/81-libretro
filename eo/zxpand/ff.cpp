@@ -5,6 +5,7 @@
 / Completely hacked to use a local subfolder for EightyOne
 /----------------------------------------------------------------------------*/
 
+#include <stdint.h>
 #include "ff.h" /* FatFs configurations and declarations */
 #include "diskio.h"
 
@@ -152,12 +153,12 @@ FRESULT cvtERRNO(void)
 
 void SetHandle(FIL *fp, int handle)
 {
-   fp->fs = (FATFS *)handle;
+   fp->fs = (FATFS *)(intptr_t)handle;
 }
 
 int GetHandle(FIL *fp)
 {
-   return (int)fp->fs;
+   return (int)(intptr_t)fp->fs;
 }
 
 /*-----------------------------------------------------------------------*/

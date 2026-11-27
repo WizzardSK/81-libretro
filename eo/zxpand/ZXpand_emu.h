@@ -1,3 +1,5 @@
+#ifndef ZXPAND_EMU_H
+#define ZXPAND_EMU_H
 class zxpand_t;
 
 class ZXpand
@@ -72,3 +74,5 @@ enum
 // * When emulation stops or the machine is reset or before a new instance is needed (EG changing card image)
 //    zxp_destroy( instance );
 //    instance = NULL;
+
+#endif

@@ -7,6 +7,10 @@
 #include <stdio.h>
 
 #include "ZXpand_emu.h"
+
+/* libretro cores are built without C++ exceptions: nothing in here throws */
+#define try if ( true )
+#define catch( ... ) if ( false )
 #include "zxpandclass.h"
  
 extern void SetRoot(const char*);
