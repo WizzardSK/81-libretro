@@ -1,3 +1,4 @@
+#include <stdio.h>
 /* EightyOne - A Windows emulator of the Sinclair ZX range of computers.
  * Copyright (C) 2003-2025 Michael D Wynne
  *
@@ -1153,9 +1154,12 @@ BYTE zx81_opcode_fetch(int Address)
                         }
                         else
                         {
+                                int code_ = data;
                                 video = 1;
                                 data=readoperandbyte(((z80.i & 254) << 8) + (data << 3) | lineCounter);
                                 video = 0;
+                                { extern int eo_trace_on; extern FILE* eo_trace_f;
+                                  if (eo_trace_on && eo_trace_f) fprintf(eo_trace_f, "sl=%d I=%02x lc=%d pc=%04x code=%02x pat=%04x val=%02x\n", scanlineCounter, z80.i, lineCounter, Address, code_, ((z80.i & 254) << 8) + (code_ << 3) | lineCounter, data); }
                         }
                 }
                 else

@@ -219,8 +219,31 @@ void eo_settv( CONFIG* cfg )
 }
 
 /* TForm1::RunFrame of EightyOne 1.41 */
+int eo_trace_on = 0;
+FILE* eo_trace_f = NULL;
+static int eo_trace_frame = 0;
+BYTE zx81_ReadByte( int Address );
+
 void eo_tick( void )
 {
+  {
+    const char* e = getenv( "EO_TRACE_FRAME" );
+    int target = e ? atoi( e ) : -1;
+    eo_trace_frame++;
+    if ( eo_trace_on )
+    {
+      eo_trace_on = 0;
+      fclose( eo_trace_f ); eo_trace_f = NULL;
+      FILE* m = fopen( "/tmp/eo_mem.bin", "wb" );
+      for ( int a = 0; a < 0x10000; a++ ) { BYTE b = zx81_ReadByte( a ); fwrite( &b, 1, 1, m ); }
+      fclose( m );
+    }
+    if ( eo_trace_frame == target )
+    {
+      eo_trace_f = fopen( "/tmp/eo_trace.txt", "w" );
+      eo_trace_on = 1;
+    }
+  }
   static int j, borrow;
 
   sound_frame();
