@@ -9,7 +9,7 @@
 #include "zx81.h"
 #include "z80.h"
 #include "eo_upstream.h"
-#include "ace.h"
+#include "Ace/ace.h"
 #include <kbstatus.h>
 
 extern "C" {
