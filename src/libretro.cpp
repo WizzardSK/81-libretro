@@ -392,16 +392,16 @@ static void autotype( void )
   {
     switch ( t )
     {
-    case 100: PCKeyDown( 'J' ); break;
-    case 105: PCKeyUp( 'J' ); break;
-    case 110: PCKeyDown( VK_SHIFT ); break;
-    case 112: PCKeyDown( 'P' ); break;
-    case 117: PCKeyUp( 'P' ); break;
-    case 122: PCKeyDown( 'P' ); break;
-    case 127: PCKeyUp( 'P' ); break;
-    case 129: PCKeyUp( VK_SHIFT ); break;
-    case 135: PCKeyDown( VK_RETURN ); break;
-    case 140: PCKeyUp( VK_RETURN ); state.autotype = -1; break;
+    case 200: PCKeyDown( 'J' ); break;
+    case 205: PCKeyUp( 'J' ); break;
+    case 210: PCKeyDown( VK_SHIFT ); break;
+    case 212: PCKeyDown( 'P' ); break;
+    case 217: PCKeyUp( 'P' ); break;
+    case 222: PCKeyDown( 'P' ); break;
+    case 227: PCKeyUp( 'P' ); break;
+    case 229: PCKeyUp( VK_SHIFT ); break;
+    case 235: PCKeyDown( VK_RETURN ); break;
+    case 240: PCKeyUp( VK_RETURN ); state.autotype = -1; break;
     }
     
     return;
