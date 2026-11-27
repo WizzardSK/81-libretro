@@ -49,6 +49,9 @@ void LogOutAccess( int, BYTE ) {}
 void LogInAccess( int, BYTE ) {}
 void ResetLastIOAccesses( void ) {}
 
+/* ZXpand+'s joystick port: not connected (all lines high) */
+unsigned char readJoy( void ) { return 0xff; }
+
 extern "C" int LarkenLoadTrack( int, int, unsigned char* ) { return 0; }
 extern "C" void LarkenSaveTrack( int, int, unsigned char* ) {}
 
