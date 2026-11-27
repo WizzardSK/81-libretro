@@ -22,12 +22,12 @@ extern const char* fdcRomsFolder;
 extern const char* ideRomsFolder;
 
 /* debugger / UI */
-void DebugUpdate( void );
+#include <funcs.h>
 struct EoForm1 { void BuildMenuJoystickSelection() {} };
 extern EoForm1* Form1;
 struct EoLiveMemoryWindow { void Write( int, BYTE ) {} void Read( int, BYTE ) {} void Write( int ) {} void Read( int ) {} };
 extern EoLiveMemoryWindow* LiveMemoryWindow;
-struct EoBasicLister { bool Visible; void Refresh() {} };
+struct EoBasicLister { bool Visible; void Refresh( bool ) {} };
 extern EoBasicLister* BasicLister;
 
 /* ZXpand (stage 2) */
@@ -108,6 +108,7 @@ extern EoSpeech sp0256_AL2, Digitalker;
 #define D8255PRTA 1
 #define D8255PRTB 2
 #define D8255PRTC 3
+#define D8255CTRL 4
 extern "C" {
 BYTE d8255_read( BYTE port );
 void d8255_write( BYTE port, BYTE data );
