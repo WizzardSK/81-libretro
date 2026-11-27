@@ -62,3 +62,6 @@ int RetExecuted = 0;
 
 /* ZX97 Lite banked memory (not one of this core's machines) */
 unsigned char zx97bankmem[ 16 * 16384 ];
+
+/* the debugger's symbol files, which ZXpand offers to load */
+void loadFileSymbolsProxy( const char* ) {}

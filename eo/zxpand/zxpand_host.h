@@ -19,9 +19,17 @@ typedef unsigned char  UCHAR;
 typedef unsigned short USHORT;
 typedef unsigned short WCHAR;
 
-#ifndef O_BINARY
-#define O_BINARY 0
+#ifdef _WIN32
+
+/* MinGW has the underscored names in <io.h>, <fcntl.h> and <direct.h> */
+#include <io.h>
+#include <direct.h>
+#ifndef S_IWUSR
+#define S_IWUSR _S_IWRITE
 #endif
+#define zxp_mkdir( p ) _mkdir( p )
+
+#else
 
 #define _open   open
 #define _read   read
@@ -32,7 +40,7 @@ typedef unsigned short WCHAR;
 #define _rmdir  rmdir
 #define _unlink unlink
 
-#define _O_BINARY O_BINARY
+#define _O_BINARY 0
 #define _O_CREAT  O_CREAT
 #define _O_TRUNC  O_TRUNC
 #define _O_RDWR   O_RDWR
@@ -44,11 +52,8 @@ typedef unsigned short WCHAR;
 #define _S_IREAD  S_IRUSR
 #define _S_IWRITE S_IWUSR
 
-#ifdef _WIN32
-#include <direct.h>
-#define zxp_mkdir( p ) mkdir( p )
-#else
 #define zxp_mkdir( p ) mkdir( p, 0777 )
+
 #endif
 
 /* _fullpath without touching the disk: joins, resolves . and .. */
