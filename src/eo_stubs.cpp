@@ -51,3 +51,11 @@ void ResetLastIOAccesses( void ) {}
 
 extern "C" int LarkenLoadTrack( int, int, unsigned char* ) { return 0; }
 extern "C" void LarkenSaveTrack( int, int, unsigned char* ) {}
+
+/* debugger state the Z80 core updates (DebugWin of EightyOne) */
+int StackChange = 0;
+int StepOutRequested = 0;
+int RetExecuted = 0;
+
+/* ZX97 Lite banked memory (not one of this core's machines) */
+unsigned char zx97bankmem[ 16 * 16384 ];
