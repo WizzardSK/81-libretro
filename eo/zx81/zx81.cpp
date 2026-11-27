@@ -523,6 +523,9 @@ void zx81_WriteByte(int Address, int Data)
         LiveMemoryWindow->Write((unsigned short)Address);
 
         noise = (noise<<8) | Data;
+        { static FILE* wt = NULL; static long wn = 0; static int init = 0;
+          if (!init) { init = 1; if (getenv("EO_WTRACE")) wt = fopen("/tmp/eo_wtrace.txt", "w"); }
+          if (wt && Address >= 0x2000 && Address < 0x4000 && wn < 300000) { wn++; fprintf(wt, "pc=%04x a=%04x d=%02x i=%02x ramtop=%04x r816=%d\n", z80.pc.w, Address, Data & 255, z80.i, zx81.RAMTOP, zx81.RAM816k); if ((wn & 1023) == 0) fflush(wt); } }
 
         // A ROM cartridge has highest precedence over the 0K-16K region, which it
         // ensures by masking out the MREQ line.
@@ -693,6 +696,7 @@ void zx81_WriteByte(int Address, int Data)
         if (Address>8191 && Address<16384 && zx81.RAM816k && zx81.RAM816kWriteProtected && !g007RamWrite) return;
         
 writeMem:
+        { static FILE* wf = NULL; static long fn = 0; static int fi = 0; if (!fi) { fi = 1; if (getenv("EO_WTRACE")) wf = fopen("/tmp/eo_wfinal.txt", "w"); } if (wf && Address >= 0x2000 && Address < 0x4000 && fn < 300000) { fn++; fprintf(wf, "%04x %02x\n", Address, Data & 255); if ((fn & 1023) == 0) fflush(wf); } }
         memory[Address]=(BYTE)Data;
 }
 
