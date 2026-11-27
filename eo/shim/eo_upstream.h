@@ -146,6 +146,7 @@ void load_snap_ace( const unsigned char* data, size_t size );
 #define AY_TYPE_ZONX       2
 #define AY_TYPE_FULLER     3
 #define AY_TYPE_ACE_USER   4
+#define AY_TYPE_BOLDFIELD  8
 extern "C" { void sound_beeper( int on ); void sound_ay_write( int reg, int val ); int sound_ay_read( int reg ); }
 class CSound
 {
