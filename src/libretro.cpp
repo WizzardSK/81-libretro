@@ -619,7 +619,7 @@ void retro_reset( void )
     // There is no ZX80 snapshot sitting at LOAD: the ROM boots, and
     // zx80_autotype() types LOAD and RUN. The tape starts when the ROM
     // asks for its first byte (rompatch.c).
-    zx81.TZXin = 1;
+    emulator.TZXin = 1;
     TZXFile.LoadOFile( state.data, state.size, false );
     state.autotype = 0;
     state.tapeseen = 0;
@@ -628,7 +628,7 @@ void retro_reset( void )
   {
     load_snap( "zx81_16k.z81" );
     
-    zx81.TZXin = 1;
+    emulator.TZXin = 1;
     TZXFile.LoadFile( state.data, state.size, false );
     TZXFile.Start();
     
