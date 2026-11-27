@@ -255,9 +255,9 @@ int RasterY = 0;
 #define FuWinL 0
 #define FuWinR ( FuWinL + 413 )
 
-#define HTOL 405
-#define VTOLMIN 290
-#define VTOLMAX 340
+#define HTOL 390
+#define VTOLMIN 283
+#define VTOLMAX 323
 #define HMIN 10
 #define VMIN 350
 
