@@ -418,6 +418,64 @@ static void autotype( void )
 
 
   
+  if ( state.cfg.machine == MACHINEACE )
+  {
+    /* FORTH has no LOAD "": LOAD takes the name from the tape's header
+       (2 bytes of length, the type, 10 of name; 0 = a dictionary) once the
+       Ace has booted, about a second; the dictionary's own word that starts
+       it is the user's to type */
+    static char acekeys[ 24 ];
+
+    if ( t == 0 )
+    {
+      const unsigned char* d = (const unsigned char*)state.data;
+      int n = 0;
+
+      acekeys[ 0 ] = 0;
+
+      if ( state.size > 13 && d[ 0 ] == 26 && d[ 2 ] == 0 )
+      {
+        n = snprintf( acekeys, sizeof( acekeys ), "LOAD " );
+
+        for ( int i = 3; i < 13 && d[ i ] != ' ' && isalnum( d[ i ] ); i++ )
+        {
+          acekeys[ n++ ] = (char)toupper( d[ i ] );
+        }
+
+        acekeys[ n++ ] = '\n';
+        acekeys[ n ] = 0;
+      }
+
+      if ( !acekeys[ 0 ] )
+      {
+        state.autotype = -1;
+      }
+
+      return;
+    }
+
+    int k = ( t - 100 ) / 16;
+    int phase = ( t - 100 ) % 16;
+
+    if ( t < 100 )
+    {
+      return;
+    }
+
+    if ( !acekeys[ k ] )
+    {
+      state.autotype = -1;
+      return;
+    }
+
+    int key = acekeys[ k ] == '\n' ? VK_RETURN : acekeys[ k ] == ' ' ? VK_SPACE : acekeys[ k ];
+
+    if ( phase == 0 ) PCKeyDown( key );
+    else if ( phase == 8 ) PCKeyUp( key );
+
+    return;
+  }
+
   if ( state.cfg.machine == MACHINEZX80 )
   {
     switch ( t )
@@ -847,9 +905,8 @@ void retro_reset( void )
     }
     else if ( state.cfg.machine == MACHINEACE )
     {
-      // an Ace .tap; FORTH has no LOAD "": the user types LOAD and the name
+      // an Ace .tap: autotype() types LOAD and the name in its header
       TZXFile.LoadAceTAPFile( state.data, state.size, false );
-      state.autotype = -1;
     }
     else if ( state.zx80 )
     {
