@@ -182,6 +182,14 @@ static int internal_init( CONFIG* cfg )
   InitPatches( emulator.machine );
   sound_ay_init();
 
+  if ( emulator.machine == MACHINEACE )
+  {
+    /* the colour of each character cell, which the ROM sets as it clears
+       the screen; an .ace snapshot is loaded before it has run */
+    extern BYTE acelatch;
+    memset( acecolour, acelatch, 1024 );
+  }
+
   return 0;
 }
 
