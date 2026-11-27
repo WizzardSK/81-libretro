@@ -1,0 +1,20 @@
+name: test build
+on: [push, workflow_dispatch]
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-22.04, ubuntu-22.04-arm]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - run: |
+          set -o pipefail
+          make -f Makefile.libretro -k -j4 2>&1 | tee build.log || true
+          grep -E "error|undefined reference" build.log | sort -u | head -400 || true
+          test -f 81_libretro.so
+      - uses: actions/upload-artifact@v4
+        with:
+          name: 81_libretro-${{ matrix.os }}
+          path: 81_libretro.so
